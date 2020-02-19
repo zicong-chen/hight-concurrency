@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>上传页面</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<!-- jquery -->
+	<script type="text/javascript" th:src="@{/global/js/jquery.min.js}"></script>
+	<!-- bootstrap -->
+	<link rel="stylesheet" type="text/css" th:href="@{/global/bootstrap/css/bootstrap.min.css}"/>
+	<script type="text/javascript" th:src="@{/global/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<h1>上传页面</h1>
+<form enctype="multipart/form-data" id="fileForm">
+	<input type="file" name="file"> <br>
+	<input type="button" value="submit" onclick="uploadFile()">
+</form>
+
+</body>
+<script>
+function uploadFile(){
+    var data = new FormData($("#fileForm")[0]);
+    $.ajax({
+        type:"POST",
+        url:"/upload/uploadFile",
+		data:data,
+	    contentType: false,
+	    processData:false,
+	    success:function (res) {
+		    if(res.code===20000){
+		        alert(res.message)
+		    }else {
+		        alert(res.message)
+		    }
+        }
+    })
+}
+
+</script>
+</html>

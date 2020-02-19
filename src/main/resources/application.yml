@@ -1,0 +1,89 @@
+spring:
+  # 数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/high_concurrency?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      # 用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。
+      validationQuery: select 'x'
+      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，
+      # 如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      testWhileIdle: true
+      # 启用了maxWait，默认会使用公平锁，性能会有所下降。 这边手动采用非公平锁
+      use-unfair-lock: true
+  # 模板引擎
+  thymeleaf:
+    check-template-location: false
+    encoding: UTF-8
+    cache: false
+  flyway:
+    locations: classpath:/db
+    baseline-on-migrate: true
+    out-of-order: true
+  # redis
+  redis:
+    database: 0
+    host: 47.103.3.240
+    port: 6379
+    password: czcwr1314
+    maxActive: 8
+    maxWait: 500
+    maxIdle: 8
+    timeout: 10
+
+
+# 热编译
+  devtools:
+    livereload:
+      port: 35734
+
+# 消息队列
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    # 这个账号密码只能连接本地的mq，远程的话需要配置
+#    password: guest
+#    username: guest
+#    virtual-host: /
+#    listener:
+#      simple:
+#        concurrency: 10
+#        max-concurrency: 10
+#        prefetch: 1 # 从队列每次取一个
+#        auto-startup: true
+#        default-requeue-rejected: true # 失败后重试
+  data:
+    elasticsearch:
+      cluster-name: my-elasticsearch
+      cluster-nodes: 47.103.3.240:9300
+  servlet:
+    multipart:
+      max-file-size: 100MB
+
+
+mybatis:
+  #  别名转换
+  type-aliases-package: top.chenzicong.highconcurrency.model
+  configuration:
+    #    驼峰式和下划线式之间的转换
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8880
+
+real-max-file-size: 10MB
+
+# token
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: mySecret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: sh  #JWT负载中拿到开头

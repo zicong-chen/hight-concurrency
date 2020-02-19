@@ -1,0 +1,1 @@
+alter  table  goods add  `e` int default  1 comment '1';
